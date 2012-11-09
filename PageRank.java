@@ -47,12 +47,13 @@ public class PageRank{
   int depth = 0;
 
   Path in,out;
-  System.out.println();
-  System.out.println();
-  System.out.println("Summary :: ");
-  System.out.println("ITERATIONS   TIME(Millisecond)");
-  System.out.println();
-  System.out.println();
+  String Summary=new String("");
+  
+  Summary+="\n\n";
+  
+  Summary+="Summary :: "+"\n\n";
+  Summary+="ITERATIONS   TIME(Millisecond)"+"\n\n";
+
   
   int ITERATIONS = Integer.parseInt(args[1]);
     depth++;
@@ -89,8 +90,8 @@ public class PageRank{
       deleteDir(new File(args[0]+"/depth_"+(depth-1)));
       
       long finishTime=System.currentTimeMillis();
-      System.out.println(depth+"            "+(finishTime-startTime));
-      System.out.println();   
+      Summary+=Integer.toString(depth)+"            "+Long.toString(finishTime-startTime)+"\n";
+         
 
       depth++;
     
@@ -120,18 +121,19 @@ public class PageRank{
       // wait for completion and update the counter
       job.waitForCompletion(true);
 
-      System.out.println();
-      System.out.println("Number of Nodes  : "+PageRankUtil.no_of_nodes);
-      System.out.println();
-      System.out.println("Number of Edges  : "+PageRankUtil.no_of_edges);
-      System.out.println();
-      System.out.println("Minimum number of outlinks : "+PageRankUtil.min_outlinks);
-      System.out.println();
-      System.out.println("Maximum number of outlinks : "+PageRankUtil.max_outlinks);
-      System.out.println();
-      System.out.println("Average number of outlinks : "+(PageRankUtil.no_of_nodes/PageRankUtil.no_of_edges));
-      System.out.println();
-      System.out.println();
+      Summary+="\n";
+      Summary+="Number of Nodes  : "+Long.toString(PageRankUtil.no_of_nodes)+"\n";
+      
+      Summary+="Number of Edges  : "+Long.toString(PageRankUtil.no_of_edges)+"\n";
+      
+      Summary+="Minimum number of outlinks : "+Long.toString(PageRankUtil.min_outlinks)+"\n";
+      
+      Summary+="Maximum number of outlinks : "+Long.toString(PageRankUtil.max_outlinks)+"\n";
+      
+      Summary+="Average number of outlinks : "+Double.toString(PageRankUtil.no_of_nodes/(1.0*PageRankUtil.no_of_edges));
+      Summary+="\n\n";
+      System.out.println(Summary);
+
 
  }
         

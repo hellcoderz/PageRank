@@ -33,7 +33,11 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
                     util.max_outlinks = valuesList.length - 2;
                 if(util.min_outlinks > valuesList.length - 2)
                     util.min_outlinks = valuesList.length - 2;
-                context.write(new Text(pagerank), new Text(separator + current_link));
+
+                Double pg = Double.parseDouble(pagerank);
+                pg = 1/pg;
+
+                context.write(new Text(String.valueOf(pg)), new Text(separator + current_link));
 	}
  }
 
