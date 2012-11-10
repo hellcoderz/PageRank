@@ -14,7 +14,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
     public void reduce(Text key, Iterable<Text> values, Context context) 
       throws IOException, InterruptedException {
 		for(Text value: values){
-			context.write(new Text(String.valueOf(1/Double.parseDouble(key.toString()))), value);
+			context.write(new Text(String.valueOf(1/Double.parseDouble(key.toString()))), value);	//to emit actual rank and node
 		} 
      }
  }

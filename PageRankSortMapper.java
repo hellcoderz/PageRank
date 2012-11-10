@@ -18,26 +18,31 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
     private Text outValue = new Text();	//output value
     private String double_separator = "\t\t";	//separator to identify outlinks line
     private String separator = "\t";	//normal separator to identify inlink, pagerank and outlinks
+
+    public enum nodes{COUNT};
+    public enum edges{COUNT};
+    public enum min{COUNT};
+    public enum max{COUNT};
           
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException 
 	{
 
-            
-            util.no_of_nodes = util.no_of_nodes + 1;
+            //increase no. of nodes by 1
+            context.getCounter(nodes.COUNT).increment(1);
+            //convert to string
        		String line = value.toString();
-                String[] valuesList = line.split("\t");
-                String current_link = valuesList[0];
-                String pagerank = valuesList[1]; // the first element is empty
-                util.no_of_edges = util.no_of_edges + valuesList.length - 2;
-                if(util.max_outlinks < valuesList.length - 2)
-                    util.max_outlinks = valuesList.length - 2;
-                if(util.min_outlinks > valuesList.length - 2)
-                    util.min_outlinks = valuesList.length - 2;
+            String[] valuesList = line.split("\t");     //split string into substrings based on deliminator
+            String current_link = valuesList[0];        //get current link
+            String pagerank = valuesList[1]; // get the pagerank
+            context.getCounter(edges.COUNT).increment(valuesList.length - 2);    //update no of edges which are eaqual to no. of outlinks
+            if(context.getCounter(max.COUNT).getValue() < valuesList.length - 2)   //find max no. of outlinks
+                context.getCounter(max.COUNT).increment(valuesList.length - 2);
+            if(context.getCounter(min.COUNT).getValue() > valuesList.length - 2);   //find min no. of outlinks
+                context.getCounter(min.COUNT).increment(valuesList.length - 2);
 
-                Double pg = Double.parseDouble(pagerank);
-                pg = 1/pg;
-
-                context.write(new Text(String.valueOf(pg)), new Text(separator + current_link));
+            Double pg = Double.parseDouble(pagerank);   //converting string to double
+            pg = 1/pg;  //converting lowest rank to highest and vice-a-versa to sort the result in decreasing order
+            context.write(new Text(String.valueOf(pg)), new Text(separator + current_link));    //emit pagerank,current link
 	}
  }
 

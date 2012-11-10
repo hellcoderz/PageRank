@@ -122,15 +122,15 @@ public class PageRank{
       job.waitForCompletion(true);
 
       Summary+="\n";
-      Summary+="Number of Nodes  : "+Long.toString(PageRankUtil.no_of_nodes)+"\n";
+      Summary+="Number of Nodes  : "+Long.toString(job.getCounters().findCounter(PageRankSortMapper.nodes.COUNT).getValue())+"\n";
       
-      Summary+="Number of Edges  : "+Long.toString(PageRankUtil.no_of_edges)+"\n";
+      Summary+="Number of Edges  : "+Long.toString(job.getCounters().findCounter(PageRankSortMapper.edges.COUNT).getValue())+"\n";
       
-      Summary+="Minimum number of outlinks : "+Long.toString(PageRankUtil.min_outlinks)+"\n";
+      Summary+="Minimum number of outlinks : "+Long.toString(job.getCounters().findCounter(PageRankSortMapper.min.COUNT).getValue())+"\n";
       
-      Summary+="Maximum number of outlinks : "+Long.toString(PageRankUtil.max_outlinks)+"\n";
+      Summary+="Maximum number of outlinks : "+Long.toString(job.getCounters().findCounter(PageRankSortMapper.max.COUNT).getValue())+"\n";
       
-      Summary+="Average number of outlinks : "+Double.toString(PageRankUtil.no_of_nodes/(1.0*PageRankUtil.no_of_edges));
+      Summary+="Average number of outlinks : "+Double.toString(job.getCounters().findCounter(PageRankSortMapper.edges.COUNT).getValue()/(1.0*job.getCounters().findCounter(PageRankSortMapper.nodes.COUNT).getValue()));
       Summary+="\n\n";
       System.out.println(Summary);
 
