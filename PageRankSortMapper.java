@@ -23,6 +23,10 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
     public enum edges{COUNT};
     public enum min{COUNT};
     public enum max{COUNT};
+
+    public void setup(Context ctx){
+        ctx.getCounter(min.COUNT).setValue(9999);
+    }
           
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException 
 	{
@@ -36,9 +40,10 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
             String pagerank = valuesList[1]; // get the pagerank
             context.getCounter(edges.COUNT).increment(valuesList.length - 2);    //update no of edges which are eaqual to no. of outlinks
             if(context.getCounter(max.COUNT).getValue() < valuesList.length - 2)   //find max no. of outlinks
-                context.getCounter(max.COUNT).increment(valuesList.length - 2);
+                context.getCounter(max.COUNT).setValue(valuesList.length - 2);
             if(context.getCounter(min.COUNT).getValue() > valuesList.length - 2);   //find min no. of outlinks
-                context.getCounter(min.COUNT).increment(valuesList.length - 2);
+                context.getCounter(min.COUNT).setValue(valuesList.length - 2);
+                context.getCounter(min.COUNT).setValue(0);
 
             Double pg = Double.parseDouble(pagerank);   //converting string to double
             pg = 1/pg;  //converting lowest rank to highest and vice-a-versa to sort the result in decreasing order
