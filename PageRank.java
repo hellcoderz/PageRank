@@ -105,6 +105,7 @@ public class PageRank{
       job.setMapperClass(PageRankSortMapper.class);
       job.setReducerClass(PageRankSortReducer.class);
       job.setJarByClass(PageRank.class);
+      job.setNumReduceTasks(1);
       // always work on the path of the previous depth
       in = new Path(args[0]+"/depth_" + (depth - 1) + "/");
       out = new Path(args[0]+"/sorted");
